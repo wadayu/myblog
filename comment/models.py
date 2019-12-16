@@ -23,3 +23,11 @@ class Comment(models.Model):
     class Meta:
         db_table = 'comment'
         verbose_name = verbose_name_plural = '评论'
+
+    def __str__(self):
+        return '{}评论添加成功'.format(self.target.title)
+
+    @classmethod
+    def get_latest_comments(cls):
+        return cls.objects.filter(status=Comment.STATUS_NORMAL).order_by('-created_time')[0:2]
+

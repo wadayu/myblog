@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}详情页{% endblock %}
+
+{% block main %}
+{% if post %}
+    <h3>{{ post.title }}</h3>
+    <div>
+    <span><b>作者</b>： {{ post.owner.username }}&nbsp&nbsp</span>
+    <span><b>分类</b>： {{ post.category.name }}&nbsp&nbsp</span>
+    <span><b>创建时间</b>： {{ post.created_time }}</span>
+    </div>
+    <hr/>
+    <p>{{ post.content }}</p>
+
+{% endif %}
+{% endblock %}
