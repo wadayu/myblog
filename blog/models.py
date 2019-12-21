@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+import mistune
+
 
 class Category(models.Model):
     STATUS_NORMAL = 1
@@ -51,7 +53,7 @@ class Tag(models.Model):
     name = models.CharField(max_length=10, verbose_name='名称')
     status = models.PositiveIntegerField(choices=STATUS_ITEMS,
                                          default=STATUS_NORMAL, verbose_name='状态')
-    owner = models.ForeignKey(User, verbose_name='作者')
+    # owner = models.ForeignKey(User, verbose_name='作者', default='')
     created_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
 
     class Meta:
@@ -73,6 +75,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255, verbose_name='标题')
     desc = models.CharField(max_length=1024, blank=True, verbose_name='摘要')
     content = models.TextField(verbose_name='正文', help_text='正文必须为MarkDown格式')
+    content_html = models.TextField(verbose_name='正文html代码', blank=True, editable=False)
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
                                          choices=STATUS_ITEMS, verbose_name='状态')
     category = models.ForeignKey(Category, verbose_name='分类')
@@ -89,6 +92,15 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.content_html = mistune.markdown(self.content)
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        from comment.models import Comment
+        Comment.objects.filter(target_id=self.id).delete()
+        super().delete(*args, **kwargs)
 
     @staticmethod
     def get_by_tag(tag_id):
@@ -122,3 +134,7 @@ class Post(models.Model):
     @classmethod
     def hot_posts(cls):
         return cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')[0:3]
+
+    def get_comments(self):
+        from comment.models import Comment
+        return self.comment_set.filter(status=Comment.STATUS_NORMAL).order_by('-created_time')

@@ -5,7 +5,7 @@ from .models import Comment
 
 @admin.register(Comment)
 class CommnetAdmin(admin.ModelAdmin):
-    list_display = ('target', 'nickname', 'content', 'website', 'created_time')
+    list_display = ('target', 'nickname', 'content', 'created_time', 'status')
 
     fieldsets = (
         ('评论', {
@@ -19,13 +19,15 @@ class CommnetAdmin(admin.ModelAdmin):
         ('个人信息', {
             'description': '个人基本信息',
             'fields': (
-                ('nickname', 'email')
+                ('nickname', )
             )
         }),
-        ('文章链接地址', {
-            'description': '文章Url',
-            'fields': (
-                'website',
-            )
-        })
     )
+
+    def get_queryset(self, request):
+        from blog.models import Post
+        qs = super().get_queryset(request)
+        if str(request.user) == 'admin':
+            return qs
+        post_ids = Post.objects.filter(owner=request.user).only('id')
+        return qs.filter(target_id__in=post_ids)

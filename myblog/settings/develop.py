@@ -15,3 +15,17 @@ DATABASES = {
 }
 
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://192.168.14.40:6379',
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": "lonch@123",
+        },
+    },
+}
+
+REDIS_TIMEOUT = 7*24*60*60
+CUBES_REDIS_TIMEOUT = 60*60
+NEVER_REDIS_TIMEOUT = 365*24*60*60

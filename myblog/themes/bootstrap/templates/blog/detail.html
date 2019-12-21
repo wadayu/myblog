@@ -1,4 +1,49 @@
 {% extends 'blog/base.html' %}
+{% load staticfiles %}
+{% block js %}
+    <link rel="stylesheet" href="{% static 'css/googlecode.min.css' %}">
+    <script src="{% static 'js/highlight.min.js' %}"></script>
+{#    <scrip>hljs.initHighlightingOnLoad();</scrip>#}
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript">
+    $(function () {
+        var post_id = $('#target').val();
+        $('#comment').click(function () {
+            var nickname = $('#id_nickname').val();
+            var content = $('#id_content').val();
+
+            if(nickname == '' || content == ''){
+                alert('输入框不能为空');
+                return false;
+            }
+
+            if(content.length < 10 || content.length > 200 ){
+                alert('输入评论不能少于10个字符且不能大于200字符');
+                return false;
+            }
+
+            if(nickname.length < 1 || nickname.length > 10 ){
+                alert('输入昵称不能少于2个字符且不能大于10字符');
+                return false;
+            }
+
+            param = {'post_id': post_id, 'nickname': nickname, 'content': content};
+             $.ajaxSetup({
+                data:{csrfmiddlewaretoken:'{{ csrf_token }}'}
+            });
+            $.post('/comment/',param,function (data) {
+                if(data.res == 0){
+                    alert(data.message);
+                    window.location.reload();
+                }else{
+                    alert(data.message)
+                }
+            });
+        })
+    })
+
+    </script>
+{% endblock %}
 
 {% block title %}详情页{% endblock %}
 
@@ -6,12 +51,39 @@
 {% if post %}
     <h3>{{ post.title }}</h3>
     <div>
-    <span><b>作者</b>： {{ post.owner.username }}&nbsp&nbsp</span>
-    <span><b>分类</b>： {{ post.category.name }}&nbsp&nbsp</span>
+    <span><b>作者</b>： <a href={% url 'author' post.owner.id %}>{{ post.owner.username }}</a>&nbsp&nbsp</span>
+    <span><b>分类</b>： <a href={% url 'category-list' post.category.id %}>{{ post.category.name }}</a>&nbsp&nbsp</span>
     <span><b>创建时间</b>： {{ post.created_time }}</span>
     </div>
     <hr/>
-    <p>{{ post.content }}</p>
+    {% autoescape off %}
+    <p>{{ post.content_html }}</p>
+    {% endautoescape %}
 
+    <hr>
+    <div class="comment">
+        <form class="form-group" action="#" method="POST">
+            {% csrf_token %}
+            <input name="target" id="target" type="hidden" value={{ post.id }}>
+            {{ comment_form }}
+            <input id='comment' type="button" value="提交">
+        </form>
+
+        <!-- 评论列表 -->
+        <ul class="list-group">
+            {% for comment in post.get_comments %}
+                <li class="list-group-item">
+                    <div class="nickname">
+                        <span><b>昵称：</b>{{ comment.nickname }}&nbsp&nbsp&nbsp</span><span><b>评论时间：</b>{{ comment.created_time }}</span>
+                    </div>
+                    <div class="comment-content">
+                        {% autoescape off %}
+                        {{ comment.content }}
+                        {% endautoescape %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endif %}
 {% endblock %}

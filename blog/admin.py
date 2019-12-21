@@ -24,7 +24,7 @@ class PostInline(admin.TabularInline):
 
 
 @admin.register(Category)
-class CategoryAdmin(IsexistAdmin):
+class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'status', 'is_nav', 'created_time', 'post_count')
     fields = ('name', 'status', 'is_nav')
     inlines = [PostInline]
@@ -34,11 +34,23 @@ class CategoryAdmin(IsexistAdmin):
 
     post_count.short_description = '文章数量'
 
+    def save_model(self, request, obj, form, change):
+        if Category.objects.filter(name=obj.name).exists():
+            # return self.message_user(request,  '%s Already exist!' % obj.name, level=WARNING)
+            return ''
+        return super().save_model(request, obj, form, change)
+
 
 @admin.register(Tag)
-class TagAdmin(BaseOwnerAdmin):
-    list_display = ('name', 'status', 'created_time', 'owner')
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('name', 'status', 'created_time')
     fields = ('name', 'status')
+
+    def save_model(self, request, obj, form, change):
+        if Tag.objects.filter(name=obj.name).exists():
+            # return self.message_user(request,  '%s Already exist!' % obj.name, level=WARNING)
+            return ''
+        return super().save_model(request, obj, form, change)
 
 
 class CategoryOwnerFilter(admin.SimpleListFilter):
@@ -61,10 +73,10 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
 class PostAdmin(BaseOwnerAdmin):
     # form = PostAdminform
     list_display = (
-        'title', 'category', 'status', 'created_time', 'owner', 'operator'
+        'title', 'category', 'status', 'created_time', 'owner', 'uv', 'pv', 'operator'
     )
     list_display_links = []
-    # list_filter = [CategoryOwnerFilter]
+    # list_filter = [CategoryOwnerFilter]  # 过滤器
     search_fields = ['title', 'category__name']
     # actions_on_top = True
     actions_on_bottom = True

@@ -1,20 +1,32 @@
-{% load static %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>{% block title %}首页{% endblock %}-博客系统</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href={% static 'css/bootstrap.min.css'%}>
+    <link rel="stylesheet" href={% static "css/bootstrap.min.css" %}>
+{#    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.css">#}
     <style>
     .post {
         margin-bottom: 5px;
     }
+    .jumbotron {
+        margin-bottom: 0px;
+        {#background-image: url();#}
+        background-position: 0% 25%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        color: white;
+        text-shadow: black 0.3em 0.3em 0.3em;
+    }
     </style>
+    {% block js %}
+    {% endblock %}
 </head>
 <body>
     <div class="container head">
-        <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href={% url 'index' %}>首页</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
@@ -31,8 +43,10 @@
             </div>
         </nav>
         <div class="jumbotron">
-            <h1 class="display-5">Typeidea</h1>
-            <p class="lead">基于Django的多人博客系统</p>
+            <div class="container" style="height: 10px;line-height: 10px;text-align:center;">
+            <h3 class="display-6" style="height: 10px;line-height: 10px;">欢迎来到博客网站</h3>
+{#            <p class="lead">基于Django的多人博客系统</p>#}
+            </div>
         </div>
     </div>
     <div class="container main">
@@ -57,15 +71,17 @@
     </div>
     <footer class="footer">
         <div class="container">
-            <hr/>
             <nav class="nav category">
                 {% for cate in categories %}
                     <a class="nav-link" href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
                 {% endfor %}
             </nav>
         </div>
-        <div class="container power">
-            <span class="text-muted">Power by Typeidea@the5fire</span>
+        <div class="container power" style="margin-top: 20px;">
+            <hr>
+            <p style="text-align: center">Copyright ? 2019 http://blog.ygege.com 博客学习交流平台 保留所有权利</p>
+            <p style="text-align: center">Copyright ? 2019 ICP备案证书号：蜀ICP备00001号-1</p>
+{#            <span class="text-muted">Power by Typeidea@the5fire</span>#}
         </div>
     </footer>
 </body>
