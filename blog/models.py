@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+# from django_redis import get_redis_connection
+from django.core.cache import cache
 
 import mistune
 
@@ -73,7 +75,7 @@ class Post(models.Model):
     )
 
     title = models.CharField(max_length=255, verbose_name='标题')
-    desc = models.CharField(max_length=1024, blank=True, verbose_name='摘要')
+    desc = models.CharField(max_length=1024, verbose_name='摘要')
     content = models.TextField(verbose_name='正文', help_text='正文必须为MarkDown格式')
     content_html = models.TextField(verbose_name='正文html代码', blank=True, editable=False)
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
@@ -97,10 +99,10 @@ class Post(models.Model):
         self.content_html = mistune.markdown(self.content)
         super().save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs):
-        from comment.models import Comment
-        Comment.objects.filter(target_id=self.id).delete()
-        super().delete(*args, **kwargs)
+    # def delete(self, *args, **kwargs):
+    #     from comment.models import Comment
+    #     Comment.objects.filter(target_id=self.id).delete()
+    #     super().delete(*args, **kwargs)
 
     @staticmethod
     def get_by_tag(tag_id):
@@ -128,13 +130,26 @@ class Post(models.Model):
 
     @staticmethod
     def latest_posts():
-        queryset = Post.objects.filter(status=Post.STATUS_NORMAL).order_by('-created_time')[0:3]
+        queryset = cache.get('latest_posts')
+        if not queryset:
+            queryset = Post.objects.filter(status=Post.STATUS_NORMAL).order_by('-created_time')
+            cache.set('latest_posts', queryset, 60 * 60)
         return queryset
 
     @classmethod
     def hot_posts(cls):
-        return cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')[0:3]
+        queryset = cache.get('hot_posts')
+        if not queryset:
+            queryset = cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')
+            cache.set('hot_posts', queryset, 60 * 60)
+        return queryset
 
     def get_comments(self):
         from comment.models import Comment
-        return self.comment_set.filter(status=Comment.STATUS_NORMAL).order_by('-created_time')
+        # post_id = self.id
+        # comment_key = 'comments_%s' % post_id
+        # comments = cache.get(comment_key)
+        # if not comments:
+        comments = self.comment_set.filter(status=Comment.STATUS_NORMAL).order_by('-created_time')
+            # cache.set(comment_key, comments, 60 * 60)
+        return comments

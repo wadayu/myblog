@@ -30,6 +30,6 @@ class Comment(models.Model):
 
     @classmethod
     def get_latest_comments(cls):
-        return cls.objects.filter(status=Comment.STATUS_NORMAL).order_by('-created_time')[0:2]
+        return cls.objects.filter(status=Comment.STATUS_NORMAL).order_by('-created_time')
 
 

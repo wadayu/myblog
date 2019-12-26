@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
 from django.db.models import Q, F
-from django_redis import get_redis_connection
+from django.core.cache import cache
+# from django.views import View
+# from django.contrib.auth.models import User
 
 from comment.forms import CommentForm
-from comment.models import Comment
 from .models import Tag, Post, Category
 from config.models import SideBar
 
@@ -23,8 +24,8 @@ class CommonViewMixin:
 
 
 class IndexView(CommonViewMixin, ListView):
-    queryset = Post.objects.filter(status=Post.STATUS_NORMAL).order_by('-created_time')
-    paginate_by = 6  # 分页
+    queryset = Post.latest_posts()
+    paginate_by = 5  # 分页
     context_object_name = 'post_list'
     template_name = 'blog/list.html'
 
@@ -65,7 +66,7 @@ class TagView(IndexView):
 
 class PostDetailView(CommonViewMixin, DetailView):
     # model = Post  # 与queryset二选一
-    queryset = Post.objects.filter(status=Post.STATUS_NORMAL)
+    queryset = Post.latest_posts()
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
@@ -90,14 +91,13 @@ class PostDetailView(CommonViewMixin, DetailView):
         pv_key = 'pv:%s:%s' % (uid, self.object.id)
         uv_key = 'uv:%s:%s:%s' % (uid, str(date.today()), self.object.id)
 
-        redis_conn = get_redis_connection('default')
-        if not redis_conn.get(pv_key):
+        if not cache.get(pv_key):
             increase_pv = True
-            redis_conn.set(pv_key, 1, 1*60)
+            cache.set(pv_key, 1, 1*60)
 
-        if not redis_conn.get(uv_key):
+        if not cache.get(uv_key):
             increase_uv = True
-            redis_conn.set(uv_key, 1, 24*60*60)
+            cache.set(uv_key, 1, 24*60*60)
 
         if increase_pv and increase_uv:
             Post.objects.filter(id=self.object.id).update(uv=F('uv') + 1, pv=F('pv') + 1)
@@ -131,5 +131,32 @@ class AuthorView(IndexView):
         return queryset.filter(owner_id=author_id)
 
 
+class TypeView(IndexView):
+    queryset = Post.latest_posts()
+    paginate_by = 5  # 分页
+    context_object_name = 'post_list'
+    template_name = 'blog/list.html'
+
+    def get_queryset(self):
+        type = self.request.GET.get('active')
+        if type == 'latest':
+            post_list = Post.latest_posts()
+        elif type == 'hot':
+            post_list = Post.hot_posts()
+        else:
+            post_list = Post.latest_posts()
+        return post_list
 
 
+def page_notfound(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('404.html',{})
+    response.status_code = 404
+    return response
+
+
+def page_error(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('50x.html', {})
+    response.status_code = 500
+    return response

@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'xadmin',
+    'crispy_forms',
+    'dal',   # 自动补全
+    'dal_select2',   # 自动补全
+    'ckeditor',    # 富文本功能
+    'ckeditor_uploader',   # 图片上传
     'blog',
     'config',
     'comment',
@@ -124,3 +130,22 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'themes', 'bootstrap', 'static')]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
+
+# ckeditor上传图片放到的路径（MEDIA_ROOT+uploads）
+CKEDITOR_UPLOAD_PATH = "uploads/"
+# 富文本编辑器配置
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 500,
+        'width': 895,
+        'tabSpaces': 4,
+        'extraPlugins': 'codesnippet',   # 配置代码插件
+    }
+}
+
+# 设置Django的文件存储类
+DEFAULT_FILE_STORAGE = 'extra.storage.WatermarkStorage'
