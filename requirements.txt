@@ -31,3 +31,6 @@ tablib==0.14.0
 urllib3==1.25.7
 xlrd==1.2.0
 xlwt==1.3.0
+
+# pip install https://github.com/the5fire/django-xadmin/archive/0.6.1.tar.gz
+
