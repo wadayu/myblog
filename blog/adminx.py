@@ -131,6 +131,14 @@ class PostAdmin(BaseOwnerAdmin):
         )
     )
 
+    def delete_models(self, *args, **kwargs):
+        """删除之前缓存数据"""
+        for obj in args:
+            obj.delete()
+        from django.core.cache import cache
+        cache.delete('hot_posts')
+        cache.delete('latest_posts')
+
 
 xadmin.site.register(Post, PostAdmin)
 xadmin.site.register(Category, CategoryAdmin)

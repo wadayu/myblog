@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5c69ecf6-6521-45db-b84e-790ad10f1cbc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/adminx.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/adminx.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/models.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -44,18 +44,18 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\运维资料\myblog" />
+      <recent name="D:\运维资料\myblog\myblog" />
+      <recent name="D:\运维资料\myblog\myblog\typeidea\themes\default" />
+      <recent name="D:\运维资料\myblog\myblog\settings" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\运维资料\myblog\extra" />
       <recent name="D:\运维资料\myblog\myblog\settings" />
       <recent name="D:\运维资料\myblog\myblog\themes\bootstrap\templates" />
       <recent name="D:\运维资料\myblog\myblog\themes\bootstrap\static\images" />
       <recent name="D:\运维资料\myblog\myblog\themes\bootstrap\static\js" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\运维资料\myblog" />
-      <recent name="D:\运维资料\myblog\myblog" />
-      <recent name="D:\运维资料\myblog\myblog\typeidea\themes\default" />
-      <recent name="D:\运维资料\myblog\myblog\settings" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -143,6 +143,9 @@
       <workItem from="1577085356923" duration="31029000" />
       <workItem from="1577185004360" duration="64651000" />
       <workItem from="1577495322376" duration="630000" />
+      <workItem from="1577519017034" duration="112000" />
+      <workItem from="1577519333253" duration="1770000" />
+      <workItem from="1577521154634" duration="438000" />
     </task>
     <servers />
   </component>
@@ -169,36 +172,6 @@
           <url>file://$PROJECT_DIR$/extra/storage.py</url>
           <line>16</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/blog/models.py</url>
-          <line>131</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/blog/models.py</url>
-          <line>132</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/blog/models.py</url>
-          <line>133</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/blog/models.py</url>
-          <line>134</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/blog/models.py</url>
-          <line>135</line>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/blog/models.py</url>
-          <line>136</line>
-          <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

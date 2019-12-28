@@ -99,11 +99,6 @@ class Post(models.Model):
         self.content_html = mistune.markdown(self.content)
         super().save(*args, **kwargs)
 
-    # def delete(self, *args, **kwargs):
-    #     from comment.models import Comment
-    #     Comment.objects.filter(target_id=self.id).delete()
-    #     super().delete(*args, **kwargs)
-
     @staticmethod
     def get_by_tag(tag_id):
         try:
