@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="5c69ecf6-6521-45db-b84e-790ad10f1cbc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/adminx.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/adminx.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/comment/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/comment/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extra/base_admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/extra/base_admin.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -146,6 +147,9 @@
       <workItem from="1577519017034" duration="112000" />
       <workItem from="1577519333253" duration="1770000" />
       <workItem from="1577521154634" duration="438000" />
+      <workItem from="1577522185872" duration="1770000" />
+      <workItem from="1577524021749" duration="1769000" />
+      <workItem from="1577526104931" duration="1326000" />
     </task>
     <servers />
   </component>
@@ -172,6 +176,21 @@
           <url>file://$PROJECT_DIR$/extra/storage.py</url>
           <line>16</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/comment/models.py</url>
+          <line>34</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/comment/models.py</url>
+          <line>35</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/comment/models.py</url>
+          <line>36</line>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

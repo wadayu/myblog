@@ -20,4 +20,10 @@ class BaseOwnerAdmin(object):
 
     def save_models(self):
         self.new_obj.owner = self.request.user
-        return super().save_models()
+        super().save_models()
+
+        from django.core.cache import cache
+        cache.delete('hot_posts')
+        cache.delete('latest_posts')
+
+

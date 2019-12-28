@@ -141,10 +141,10 @@ class Post(models.Model):
 
     def get_comments(self):
         from comment.models import Comment
-        # post_id = self.id
-        # comment_key = 'comments_%s' % post_id
-        # comments = cache.get(comment_key)
-        # if not comments:
-        comments = self.comment_set.filter(status=Comment.STATUS_NORMAL).order_by('-created_time')
-            # cache.set(comment_key, comments, 60 * 60)
+        post_id = self.id
+        comment_key = 'comments_%s' % post_id
+        comments = cache.get(comment_key)
+        if not comments:
+            comments = self.comment_set.filter(status=Comment.STATUS_NORMAL).order_by('-created_time')
+            cache.set(comment_key, comments, 60 * 60)
         return comments

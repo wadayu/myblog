@@ -28,6 +28,14 @@ class Comment(models.Model):
     def __str__(self):
         return '{}评论添加成功'.format(self.target.title)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        from django.core.cache import cache
+        post_id = self.target_id
+        comment_key = 'comments_%s' % post_id
+        cache.delete(comment_key)
+
     @classmethod
     def get_latest_comments(cls):
         return cls.objects.filter(status=Comment.STATUS_NORMAL).order_by('-created_time')
