@@ -3,6 +3,7 @@ from .base import *   # NOQA
 DEBUG = False
 ALLOWED_HOSTS = ['*']
 
+# 数据库配置
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',   # 数据库引擎
@@ -17,7 +18,7 @@ DATABASES = {
     }
 }
 
-
+# 缓存配置
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -32,3 +33,50 @@ CACHES = {
 REDIS_TIMEOUT = 7*24*60*60
 CUBES_REDIS_TIMEOUT = 60*60
 NEVER_REDIS_TIMEOUT = 365*24*60*60
+
+# DEBUG=False时需要配置静态文件路径
+STATIC_ROOT = os.path.join(BASE_DIR, 'themes', 'bootstrap', 'static')
+
+# 发送邮件配置
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'wadayu@163.com'
+EMAIL_HOST_PASSWORD = 'abc1234'
+EMAIL_SUBJECT_PREFIX = 'MYBLOG_'
+DEFAULT_FROM_EMAIL = 'myblog<wadayu@163.com>'
+SERVER_EMAIL = 'smtp.163.com'
+
+# 配置日志
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            'format': '%(levelname)s %(asctime)s %(module)s:'
+                      '%(funcName)s:%(lineno)d %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'myblog.log',
+            'formatter': 'default',
+            'maxBytes': 1024 * 1024,  # 1M
+            'backupCount': 5,
+        },
+
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    }
+}
